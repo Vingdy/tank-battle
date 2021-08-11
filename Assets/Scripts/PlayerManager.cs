@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;//使用UI使用
 using UnityEngine.SceneManagement;
 
+//总控制集合，除碰撞外所有变量交互和控制必须通过该Manager
 //TODO：添加双人功能
 public class PlayerManager : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class PlayerManager : MonoBehaviour
 
     public int playerScore = 0;
 
-    public bool isDead = false;
+    public bool isP1Dead = false;
+    public bool isP2Dead = false;
+    
     public bool isDefeat = false;
 
     public GameObject Born;
@@ -20,7 +23,9 @@ public class PlayerManager : MonoBehaviour
     public Text playLifeValText;
     public GameObject isDefeatUI;
 
-    //单例
+    public GameObject MapCreator;
+
+    //单例，主要用于其他cs对该cs中public变量控制
     private static PlayerManager instance;
 
     public static PlayerManager Instance
@@ -56,16 +61,20 @@ public class PlayerManager : MonoBehaviour
             Invoke("ReturnToMainMenu", 3);
             return;
         }
-        if (isDead)
+        if (isP1Dead)
         {
-            Recover();
+            Recover(1);
+        }
+        if (isP2Dead)
+        {
+            Recover(2);
         }
 
         playerScoreText.text = playerScore.ToString();
         playLifeValText.text = lifeVal.ToString();
     }
 
-    private void Recover()
+    private void Recover(int playerNum)
     {
         if (lifeVal <= 0)
         {
@@ -76,14 +85,44 @@ public class PlayerManager : MonoBehaviour
         else
         {
             lifeVal--;
-            GameObject go = Instantiate(Born, new Vector3(-2, -8), Quaternion.identity);
-            go.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量
-            isDead = false;
+            if (playerNum == 1)
+            {
+                GameObject go = Instantiate(Born, new Vector3(-2, -8), Quaternion.identity);
+                go.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量  
+                isP1Dead = false;
+            }
+            else if (playerNum == 2)
+            {
+                GameObject go2 = Instantiate(Born, new Vector3(2, -8), Quaternion.identity);//定义初始化位置
+                go2.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量
+                go2.GetComponent<Born>().Player = 2;//设置gameObject中的初始变量 
+                isP2Dead = false;
+            }
+
         }
     }
 
     private void ReturnToMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    private void FindAllEnemyAndKill()
+    {
+        //找到所有Tag为Enemy的obj
+        GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i = 0; i < enemys.Length; i++)
+        {
+            enemys[i].SendMessage("DieNow");
+        }
+    }
+
+    private void FindAllEnemyAndStop()
+    {
+        GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i = 0; i < enemys.Length; i++)
+        {
+            enemys[i].SendMessage("StopNow");
+        }
     }
 }

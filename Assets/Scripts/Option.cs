@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class Option : MonoBehaviour
 {
-    private int choice = 0;
+    public static int choice = 0;
 
+    //记录位置
     public Transform posOne;
-
     public Transform posTwo;
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,7 @@ public class Option : MonoBehaviour
             transform.position = posTwo.position;
         }
 
-        if (choice == 1 && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene(1);
         }

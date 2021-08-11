@@ -16,4 +16,10 @@ public class Shield : MonoBehaviour
     {
         
     }
+
+    private void NewShield()
+    {
+        Destroy(gameObject, 5.0f);
+        gameObject.SendMessageUpwards("DefendOutTime");
+    }
 }

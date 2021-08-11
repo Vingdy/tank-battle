@@ -8,6 +8,8 @@ public class Bullet : MonoBehaviour
     public float moveSpeed = 10;
 
     public bool isPlayerBullet;
+
+    public int level = 0;
     
     public AudioClip HitAudio;
     // Start is called before the first frame update
@@ -45,10 +47,6 @@ public class Bullet : MonoBehaviour
                      Destroy(gameObject);
                      PlayHitAudio();
                  }
-                 else
-                 {
-                     
-                 }
                  break;
              case "Wall":
                  if (isPlayerBullet)
@@ -59,6 +57,10 @@ public class Bullet : MonoBehaviour
                  Destroy(gameObject);//销毁自身
                  break;
              case "Barrier":
+                 if (level > 1)
+                 {
+                     Destroy(collision.gameObject);
+                 }
                  Destroy(gameObject);
                  break;
              default:
@@ -70,5 +72,10 @@ public class Bullet : MonoBehaviour
     public void PlayHitAudio()
     {
         AudioSource.PlayClipAtPoint(HitAudio, transform.position);
+    }
+
+    private void LevelUp()
+    {
+        level++;
     }
 }

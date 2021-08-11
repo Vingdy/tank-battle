@@ -5,5 +5,8 @@ using UnityEngine;
 
 public class Barrier : MonoBehaviour
 {
-
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
 }

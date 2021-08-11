@@ -7,12 +7,14 @@ using Random = UnityEngine.Random;
 
 //Done：修复草和水重叠的DEBUG
 //TODO: 奖励实现
-//TODO：多敌人加入
+//Done：多敌人加入
 public class MapCreator : MonoBehaviour
 {
-    //0.Home 1.Wall 2.Barrier 3.Born 4.River 5.Grass 6.AirWall
+    //0.Home 1.Wall 2.Barrier 3.Born 4.River 5.Grass 6.AirWall 7.Bonus
     public GameObject[] item;
     public List<Vector3> itemPositionList = new List<Vector3>();
+
+    // private Utility utils;
     private void Awake()
     {
         InitMap();
@@ -49,15 +51,19 @@ public class MapCreator : MonoBehaviour
             }
         }
 
-        GameObject go = Instantiate(item[3], new Vector3(-2, -8), Quaternion.identity);
+        GameObject go = Instantiate(item[3], new Vector3(-2, -8), Quaternion.identity);//定义初始化位置
         go.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量
+        
+        GameObject go2 = Instantiate(item[3], new Vector3(2, -8), Quaternion.identity);//定义初始化位置
+        go2.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量
+        go2.GetComponent<Born>().Player = 2;//设置gameObject中的初始变量
         
         CreateItem(item[3], new Vector3(-10, 8), Quaternion.identity);
         CreateItem(item[3], new Vector3(0, 8), Quaternion.identity);
         CreateItem(item[3], new Vector3(10, 8), Quaternion.identity);
-        
-        InvokeRepeating("CreateEnemy", 4,5);//重复调用
-        
+
+        InvokeRepeating("CreateEnemy", 4,10);//重复调用
+
         for (int i = 0; i <= 40; i++)
         {
             CreateItem(item[1], CreateRandomPosition(), Quaternion.identity);
@@ -75,6 +81,10 @@ public class MapCreator : MonoBehaviour
             CreateItem(item[5], CreateRandomPosition(), Quaternion.identity);
         }
 
+    }
+
+    private void Update()
+    {
     }
 
     private void CreateItem(GameObject createCameObject, Vector3 createPosition, Quaternion createRotation)
@@ -110,6 +120,7 @@ public class MapCreator : MonoBehaviour
 
     private void CreateEnemy()
     {
+        //位置
         int num = Random.Range(0, 3);
         Vector3 EnemyPos = new Vector3();
         if (num == 0)
@@ -125,5 +136,48 @@ public class MapCreator : MonoBehaviour
             EnemyPos = new Vector3(10, 8);
         }
         CreateItem(item[3], EnemyPos, Quaternion.identity);
+    }
+
+    private void CreateBonus()
+    {
+        CreateItem(item[7], CreateRandomPosition(), Quaternion.identity);
+    }
+
+    private void HeartProtect(string objName) {
+        if (objName == "Wall")
+        {
+            CreateHeartProtect(item[1]);
+        } else if (objName == "Barrier")
+        {
+            CreateHeartProtect(item[2]);
+            this.Invoke(()=>CreateHeartProtect(item[1]), 5f);
+        }
+    }
+
+    private void CreateHeartProtect(GameObject obj)
+    {
+        CreateItem(obj, new Vector3(-1, -8), Quaternion.identity);
+        this.Invoke(()=>Destroy(obj), 5f);
+        CreateItem(obj, new Vector3(1, -8), Quaternion.identity);
+        this.Invoke(()=>Destroy(obj), 5f);
+        for (int i = -1; i <= 1; i++)
+        {
+            CreateItem(obj, new Vector3(i, -7), Quaternion.identity);
+            this.Invoke(()=>Destroy(obj), 5f);
+        }
+    }
+}
+
+public static class Utility
+{
+    public static void Invoke(this MonoBehaviour mb, Action f, float delay)
+    {
+        mb.StartCoroutine(InvokeRoutine(f, delay));
+    }
+ 
+    private static IEnumerator InvokeRoutine(System.Action f, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        f();
     }
 }
