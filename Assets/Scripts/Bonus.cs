@@ -10,8 +10,12 @@ public class Bonus : MonoBehaviour
     // private GameObject enemy;
     
     //0:+1HP 1:砸瓦鲁多 2:heart无敌 3:Boom 4:lvUp 5:tank无敌
+    //TODO:闪烁消失
+    //TODO:粉重坦奖励蜜汁消失
     public Sprite[] bonusSprite;
     public int bonusNum;
+
+    public float BonusTimeVal = 15f;
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();//获取渲染组件
@@ -21,8 +25,8 @@ public class Bonus : MonoBehaviour
     void Start()
     {
         //debug
-        // bonusNum = Random.Range(0, 6);
-        bonusNum = 5;
+        bonusNum = Random.Range(0, 6);
+        // bonusNum = 3;
         switch (bonusNum)
         {
             case 0:
@@ -59,9 +63,20 @@ public class Bonus : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
+        if (BonusTimeVal <= 10f)
+        {
+            
+        }
+        else if (BonusTimeVal <= 5f)
+        {
+            
+        }
+        else
+        {
+            BonusTimeVal -= Time.fixedDeltaTime;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -82,7 +97,7 @@ public class Bonus : MonoBehaviour
                 }
                 case 2:
                 {
-                    PlayerManager.Instance.SendMessage("HeartProtect", "Barrier");
+                    PlayerManager.Instance.SendMessage("HeartProtect");
                     break;
                 }
                 case 3:

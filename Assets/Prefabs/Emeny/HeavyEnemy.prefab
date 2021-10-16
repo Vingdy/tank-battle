@@ -161,7 +161,7 @@ MonoBehaviour:
   - {fileID: 21300064, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   - {fileID: 21300080, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   - {fileID: 21300096, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
-  - {fileID: 21300108, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
+  - {fileID: 21300112, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   tankSprite2:
   - {fileID: 21300074, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   - {fileID: 21300090, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
@@ -179,6 +179,7 @@ MonoBehaviour:
   - {fileID: 21300082, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   - {fileID: 21300098, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   - {fileID: 21300110, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
+  stopController: 0
   bulletPrefab: {fileID: 6614546689467028587, guid: 969af1b201f7c724186dc3d83caaee10, type: 3}
   explosionPrefab: {fileID: 6647698874595877079, guid: 9423690ac58ae294aa1f58f8dbe2e790, type: 3}
   bulletRulerAngles: {x: 0, y: 0, z: 0}

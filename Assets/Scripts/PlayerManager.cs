@@ -89,6 +89,7 @@ public class PlayerManager : MonoBehaviour
             {
                 GameObject go = Instantiate(Born, new Vector3(-2, -8), Quaternion.identity);
                 go.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量  
+                go.GetComponent<Born>().Player = 1;//设置gameObject中的初始变量 
                 isP1Dead = false;
             }
             else if (playerNum == 2)
@@ -105,6 +106,11 @@ public class PlayerManager : MonoBehaviour
     private void ReturnToMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    private void HeartProtect()
+    {
+        MapCreator.SendMessage("HeartProtect", "Barrier");
     }
 
     private void FindAllEnemyAndKill()

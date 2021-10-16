@@ -220,14 +220,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeVal: 3
   playerScore: 0
-  isDead: 0
+  isP1Dead: 0
+  isP2Dead: 0
   isDefeat: 0
   Born: {fileID: 3822131607563517990, guid: 8b45e8f250652414fb2ffd239b2c3877, type: 3}
   playerScoreText: {fileID: 844295091}
   playLifeValText: {fileID: 1912737132}
   isDefeatUI: {fileID: 704730668}
-  Player: {fileID: 7483622692384693830, guid: d672f9a65071fec4eb6326106eb8877c, type: 3}
-  Shield: {fileID: 1353914324185872499, guid: 7dae1fed65000e34e88fbcaf9ea97229, type: 3}
+  MapCreator: {fileID: 1899163446}
 --- !u!4 &331188659
 Transform:
   m_ObjectHideFlags: 0
@@ -950,7 +950,17 @@ MonoBehaviour:
   - {fileID: 5168342427402950971, guid: 07cb7bdf0312031448d17caa11437eb0, type: 3}
   - {fileID: 7647823454086499333, guid: 056c2332964e31c42ba456ad5ad5126f, type: 3}
   - {fileID: 7852261215580847761, guid: beddd949a47c341fcb62de4810664b34, type: 3}
-  itemPositionList: []
+  itemPositionList:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
 --- !u!4 &1899163448
 Transform:
   m_ObjectHideFlags: 0

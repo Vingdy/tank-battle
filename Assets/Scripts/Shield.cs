@@ -7,7 +7,8 @@ public class Shield : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 3.0f);
+        gameObject.SetActive(true);
+        Invoke("Close", 3.0f);
         gameObject.SendMessageUpwards("DefendOutTime");
     }
 
@@ -17,9 +18,14 @@ public class Shield : MonoBehaviour
         
     }
 
+    private void Close()
+    {
+        gameObject.SetActive(false);
+    }
+    
     private void NewShield()
     {
-        Destroy(gameObject, 5.0f);
+        Invoke("Close", 5.0f);
         gameObject.SendMessageUpwards("DefendOutTime");
     }
 }

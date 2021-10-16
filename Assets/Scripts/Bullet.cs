@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public GameObject MapCreator;
+    
     public float moveSpeed = 10;
 
     public bool isPlayerBullet;
@@ -15,7 +17,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        MapCreator = GameObject.Find("MapCreator");
     }
 
     // Update is called once per frame
@@ -55,11 +57,13 @@ public class Bullet : MonoBehaviour
                  }
                  Destroy(collision.gameObject);//销毁墙
                  Destroy(gameObject);//销毁自身
+                 MapCreator.SendMessage("DelPosition", collision.gameObject.transform.position);
                  break;
              case "Barrier":
-                 if (level > 1)
+                 if (level > 2)
                  {
                      Destroy(collision.gameObject);
+                     MapCreator.SendMessage("DelPosition", collision.gameObject.transform.position);
                  }
                  Destroy(gameObject);
                  break;

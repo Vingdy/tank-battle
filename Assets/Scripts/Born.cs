@@ -62,8 +62,11 @@ public class Born : MonoBehaviour
         }
         else
         {
-            Instantiate(playerPrefab[0], transform.position, Quaternion.identity); //无旋转
-            if (Player == 2)
+            if (Player == 1)
+            {
+                Instantiate(playerPrefab[0], transform.position, Quaternion.identity); //无旋转
+            }  
+            else if (Player == 2)
             {
                 Instantiate(playerPrefab[1], transform.position, Quaternion.identity); //无旋转
             }

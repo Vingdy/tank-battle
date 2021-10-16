@@ -70,13 +70,20 @@ public class Player : MonoBehaviour
 
     private void Attack()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && PlayerNum == 1)
         {
-            if (level > 1)
-            {
-                bulletPrefab.SendMessage("LevelUp");
-            }
-            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(transform.eulerAngles+bulletRulerAngles));
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(transform.eulerAngles+bulletRulerAngles));
+
+            bullet.GetComponent<Bullet>().level = level;
+            // bullet.GetComponent<Bullet>().SendMessage(); = true;//设置gameObject中的初始变量
+            fireTimeVal = 0;
+        }
+        if(Input.GetKeyDown(KeyCode.Return) && PlayerNum == 2)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(transform.eulerAngles+bulletRulerAngles));
+
+            bullet.GetComponent<Bullet>().level = level;
+            // bullet.GetComponent<Bullet>().SendMessage(); = true;//设置gameObject中的初始变量
             fireTimeVal = 0;
         }
     }
@@ -213,7 +220,7 @@ public class Player : MonoBehaviour
         if (PlayerNum == 1)
         {
             PlayerManager.Instance.isP1Dead = true;
-        } else if (PlayerNum == 1)
+        } else if (PlayerNum == 2)
         {
             PlayerManager.Instance.isP2Dead = true;
         }
@@ -224,8 +231,10 @@ public class Player : MonoBehaviour
     private void ReShield()
     {
         isDefended = true;
-        Transform shield = transform.Find("Shield");
-        shield.SendMessage("NewShield");
+        //先获取GameObject然后激活
+        GameObject shield = transform.Find("Shield").gameObject;
+        shield.SetActive(true);
+        shield.SendMessage("NewShield");//如果未激活则会SendMessage no receiver
     }
 
     private void LevelUp()

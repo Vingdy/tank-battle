@@ -53,11 +53,15 @@ public class MapCreator : MonoBehaviour
 
         GameObject go = Instantiate(item[3], new Vector3(-2, -8), Quaternion.identity);//定义初始化位置
         go.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量
-        
-        GameObject go2 = Instantiate(item[3], new Vector3(2, -8), Quaternion.identity);//定义初始化位置
-        go2.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量
-        go2.GetComponent<Born>().Player = 2;//设置gameObject中的初始变量
-        
+        go.GetComponent<Born>().Player = 1;//设置gameObject中的初始变量
+
+        if (Option.choice == 2)
+        {
+            GameObject go2 = Instantiate(item[3], new Vector3(2, -8), Quaternion.identity);//定义初始化位置
+            go2.GetComponent<Born>().createPlayer = true;//设置gameObject中的初始变量
+            go2.GetComponent<Born>().Player = 2;//设置gameObject中的初始变量
+        }
+
         CreateItem(item[3], new Vector3(-10, 8), Quaternion.identity);
         CreateItem(item[3], new Vector3(0, 8), Quaternion.identity);
         CreateItem(item[3], new Vector3(10, 8), Quaternion.identity);
@@ -84,7 +88,8 @@ public class MapCreator : MonoBehaviour
     }
 
     private void Update()
-    {
+    {        ;
+        Debug.Log(CheckIsNotExist(new Vector3(-1, -7)));
     }
 
     private void CreateItem(GameObject createCameObject, Vector3 createPosition, Quaternion createRotation)
@@ -92,6 +97,13 @@ public class MapCreator : MonoBehaviour
         GameObject itemGo = Instantiate(createCameObject, createPosition, createRotation);
         itemGo.transform.SetParent(gameObject.transform);//gameObject.transform是指自己gameObject
         itemPositionList.Add(createPosition);
+    }
+    
+    private void CreateItemAndDie(GameObject createCameObject, Vector3 createPosition, Quaternion createRotation)
+    {
+        GameObject itemGo = Instantiate(createCameObject, createPosition, createRotation);
+        itemGo.transform.SetParent(gameObject.transform);//gameObject.transform是指自己gameObject
+        this.Invoke(()=>Destroy(itemGo), 5f);
     }
 
     private Vector3 CreateRandomPosition()
@@ -149,22 +161,59 @@ public class MapCreator : MonoBehaviour
             CreateHeartProtect(item[1]);
         } else if (objName == "Barrier")
         {
-            CreateHeartProtect(item[2]);
-            this.Invoke(()=>CreateHeartProtect(item[1]), 5f);
+            CreateHeartProtectAndDie(item[2]);
+            this.Invoke(()=>CreateHeartProtect(item[1]), 5.1f);
+        }
+    }
+
+    private void CreateHeartProtectAndDie(GameObject obj)
+    {
+        CreateItemAndDie(obj, new Vector3(-1, -8), Quaternion.identity);
+        CreateItemAndDie(obj, new Vector3(1, -8), Quaternion.identity);
+        for (int i = -1; i <= 1; i++)
+        {
+            CreateItemAndDie(obj, new Vector3(i, -7), Quaternion.identity);
         }
     }
 
     private void CreateHeartProtect(GameObject obj)
     {
-        CreateItem(obj, new Vector3(-1, -8), Quaternion.identity);
-        this.Invoke(()=>Destroy(obj), 5f);
-        CreateItem(obj, new Vector3(1, -8), Quaternion.identity);
-        this.Invoke(()=>Destroy(obj), 5f);
+        Vector3 createPosition;
+        createPosition = new Vector3(-1, -8);
+        Debug.Log(CheckIsNotExist(createPosition));
+        if (CheckIsNotExist(createPosition))
+        {
+            CreateItem(obj, createPosition, Quaternion.identity);
+        }
+        createPosition = new Vector3(1, -8);
+        Debug.Log(CheckIsNotExist(createPosition));
+        if (CheckIsNotExist(createPosition))
+        {
+            CreateItem(obj, createPosition, Quaternion.identity);
+        }
         for (int i = -1; i <= 1; i++)
         {
-            CreateItem(obj, new Vector3(i, -7), Quaternion.identity);
-            this.Invoke(()=>Destroy(obj), 5f);
+            createPosition = new Vector3(i, -7);
+            Debug.Log(CheckIsNotExist(createPosition));
+            if (CheckIsNotExist(createPosition))
+            {
+                CreateItem(obj, createPosition, Quaternion.identity);
+            }
         }
+    }
+
+    private bool CheckIsNotExist(Vector3 createPosition)
+    {
+        if (!HasThePosition(createPosition))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void DelPosition(Vector3 position)
+    {
+        itemPositionList.Remove(position);
     }
 }
 
